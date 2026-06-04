@@ -740,6 +740,41 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      nav {
+        padding: 14px 20px;
+      }
+      .nav-right .nav-link { display: none; }
+      .nav-btn { padding: 8px 16px; font-size: 12px; }
+
+      .hero { padding: 90px 20px 60px; }
+      .hero h1 { font-size: 42px; letter-spacing: -0.5px; }
+      .hero-appname { font-size: 14px; letter-spacing: 6px; }
+
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-dl, .btn-ghost { text-align: center; justify-content: center; }
+
+      .preview-window { width: 92vw; }
+
+      .section { padding: 60px 20px; }
+
+      .demo-wrap { flex-direction: column; gap: 24px; }
+      .demo-arrow { transform: rotate(90deg); margin: 0; }
+      .demo-chat { min-width: unset; width: 100%; }
+
+      .feat-grid { grid-template-columns: 1fr; }
+
+      .shots-grid { gap: 10px; }
+      .shot { flex: 0 0 200px; }
+
+      .plans { grid-template-columns: 1fr; }
+
+      .faq-list { margin-top: 32px; }
+
+      .final { padding: 70px 20px; }
+    }
+
     /* ── KEYFRAMES ── */
     @keyframes up {
       from { opacity: 0; transform: translateY(18px); }
