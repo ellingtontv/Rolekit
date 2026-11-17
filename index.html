@@ -896,7 +896,7 @@
     <a class="btn-ghost" href="#features">Посмотреть возможности</a>
   </div>
 
-  <p class="hero-meta">Windows 10 / 11 · v1.0.3 · Бесплатно</p>
+  <p class="hero-meta">Windows 10 / 11 · <span id="app-ver">v1.0.6</span> · Бесплатно</p>
 
   <!-- APP PREVIEW -->
   <div class="preview-wrap">
@@ -1228,6 +1228,12 @@
 </div>
 
 <script>
+  // Версия под кнопкой «Скачать» — номер последнего релиза на GitHub (вписанная остаётся, если GitHub не ответил)
+  fetch('https://api.github.com/repos/ellingtontv/Rolekit/releases/latest')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d && /^v\d+(\.\d+)*$/.test(d.tag_name || '')) document.getElementById('app-ver').textContent = d.tag_name; })
+    .catch(() => {});
+
   // Кнопка «Купить»: пока платёжная система не подключена, показываем окно-заглушку
   const PLANS = { month: 'Pro на месяц — 100 ₽ за 30 дней', forever: 'Pro навсегда — 300 ₽ один раз' };
   function openPay(plan) {
