@@ -595,14 +595,85 @@
     /* ── PRICING ── */
     .plans {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
       margin-top: 48px;
-      max-width: 680px;
+      max-width: 980px;
       margin-left: auto;
       margin-right: auto;
     }
-    @media (max-width: 560px) { .plans { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .plans { grid-template-columns: 1fr; max-width: 420px; } }
+    .plan { position: relative; display: flex; flex-direction: column; }
+    .plan ul { flex: 1; }
+    .plan-badge {
+      position: absolute;
+      top: -11px;
+      right: 20px;
+      background: #3d5ce8;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    button.plan-action { width: 100%; border: none; cursor: pointer; font-family: inherit; }
+    .plans-note {
+      max-width: 980px;
+      margin: 20px auto 0;
+      font-size: 13px;
+      color: #50506a;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .plans-note a, .faq-a a, .pay-box a { color: #5b7ef5; text-decoration: none; }
+    .plans-note a:hover, .faq-a a:hover, .pay-box a:hover { text-decoration: underline; }
+
+    /* ── ОКНО ОПЛАТЫ (заглушка, пока платёжка не подключена) ── */
+    .pay-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(5,5,10,.78);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .pay-modal.open { display: flex; }
+    .pay-box {
+      background: #111119;
+      border: 1px solid #3d5ce8;
+      border-radius: 14px;
+      padding: 28px;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      color: #a0a0c0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .pay-box h3 { color: #fff; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .pay-box .pay-sum { color: #5b7ef5; font-weight: 700; font-size: 15px; margin-bottom: 16px; }
+    .pay-box .pay-soon {
+      background: #1a1a28;
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #c8c8d8;
+      margin-bottom: 16px;
+    }
+    .pay-box .pay-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: #50506a;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .pay-box .pay-close:hover { color: #fff; }
+    .pay-box .plan-action { margin-top: 8px; }
     .plan {
       background: #111119;
       border: 1px solid #1a1a28;
@@ -694,7 +765,7 @@
       transition: max-height .3s ease, padding .3s ease;
     }
     .faq-item.open .faq-a {
-      max-height: 200px;
+      max-height: 420px;
       padding-bottom: 20px;
     }
 
@@ -727,11 +798,15 @@
     /* ── FOOTER ── */
     footer {
       text-align: center;
-      padding: 28px;
+      padding: 28px 24px;
       border-top: 1px solid #1a1a28;
       font-size: 12px;
-      color: #2a2a3a;
+      color: #50506a;
+      line-height: 2;
     }
+    footer a { color: #7070a0; text-decoration: none; }
+    footer a:hover { color: #fff; }
+    footer .foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; margin-bottom: 6px; }
 
     /* ── SCROLL REVEAL ── */
     .reveal {
@@ -793,7 +868,7 @@
   </a>
   <div class="nav-right">
     <a class="nav-link" href="#features">Возможности</a>
-    <a class="nav-link" href="#pricing">Планы</a>
+    <a class="nav-link" href="#pricing">Тарифы</a>
     <a class="nav-btn" href="https://github.com/ellingtontv/Rolekit/releases/latest/download/RoleKit.exe">Скачать</a>
   </div>
 </nav>
@@ -979,38 +1054,69 @@
 
 <!-- PRICING -->
 <div class="section" id="pricing">
-  <p class="label reveal">Планы</p>
-  <h2 class="title reveal">Free или Pro</h2>
-  <p class="subtitle reveal">Free — навсегда, без ограничений по времени. Pro — если нужно больше.</p>
+  <p class="label reveal">Цены</p>
+  <h2 class="title reveal">Тарифы</h2>
+  <p class="subtitle reveal">Free — бесплатно и без ограничения по времени. Pro — без ограничений по возможностям.</p>
   <div class="plans reveal">
     <div class="plan">
       <p class="plan-tier">Free</p>
       <p class="plan-price">0 ₽</p>
-      <p class="plan-note">Навсегда бесплатно</p>
+      <p class="plan-note">Бесплатно, без срока</p>
       <ul>
         <li><span class="ok">✓</span> 1 профиль</li>
         <li><span class="ok">✓</span> 10 отыгровок</li>
         <li><span class="ok">✓</span> 2 автотекста</li>
         <li><span class="ok">✓</span> 2 кодекса</li>
-        <li><span class="ok">✓</span> Шпаргалка F4</li>
-        <li><span class="ok">✓</span> Светлая / тёмная тема</li>
+        <li><span class="ok">✓</span> Запись экрана до 2 минут</li>
+        <li><span class="ok">✓</span> Шпаргалка F4, светлая / тёмная тема</li>
       </ul>
       <a class="plan-action dl" href="https://github.com/ellingtontv/Rolekit/releases/latest/download/RoleKit.exe">Скачать</a>
     </div>
     <div class="plan pro">
-      <p class="plan-tier">Pro</p>
-      <p class="plan-price">—</p>
-      <p class="plan-note">По запросу в Telegram</p>
+      <p class="plan-tier">Pro · месяц</p>
+      <p class="plan-price">100 ₽ <sub>/ 30 дней</sub></p>
+      <p class="plan-note">Разовая оплата, без автопродления</p>
       <ul>
-        <li><span class="ok">✓</span> Неограниченные профили</li>
-        <li><span class="ok">✓</span> Неограниченные отыгровки</li>
-        <li><span class="ok">✓</span> Неограниченный автотекст</li>
-        <li><span class="ok">✓</span> Неограниченные кодексы</li>
-        <li><span class="ok">✓</span> Шпаргалка F4</li>
-        <li><span class="ok">✓</span> Светлая / тёмная тема</li>
+        <li><span class="ok">✓</span> Профили без ограничений</li>
+        <li><span class="ok">✓</span> Отыгровки без ограничений</li>
+        <li><span class="ok">✓</span> Автотекст без ограничений</li>
+        <li><span class="ok">✓</span> Все кодексы, в том числе с форума</li>
+        <li><span class="ok">✓</span> Запись экрана без ограничения по времени</li>
+        <li><span class="ok">✓</span> Всё, что есть во Free</li>
       </ul>
-      <a class="plan-action pro-a" href="https://t.me/ellingtontv">Написать в Telegram</a>
+      <button type="button" class="plan-action pro-a" onclick="openPay('month')">Купить за 100 ₽</button>
     </div>
+    <div class="plan pro">
+      <span class="plan-badge">Выгоднее</span>
+      <p class="plan-tier">Pro · навсегда</p>
+      <p class="plan-price">300 ₽ <sub>один раз</sub></p>
+      <p class="plan-note">Без срока, обновления включены</p>
+      <ul>
+        <li><span class="ok">✓</span> Всё из Pro на месяц</li>
+        <li><span class="ok">✓</span> Без срока действия</li>
+        <li><span class="ok">✓</span> Новые версии и функции бесплатно</li>
+        <li><span class="ok">✓</span> Платишь один раз</li>
+      </ul>
+      <button type="button" class="plan-action pro-a" onclick="openPay('forever')">Купить за 300 ₽</button>
+    </div>
+  </div>
+  <p class="plans-note reveal">
+    Pro привязывается к одному компьютеру. Для активации нужен Machine ID: значок RoleKit в трее → «Получить Pro», он скопируется сам.<br>
+    Оплата проходит через платёжный сервис, данные карты мы не видим и не храним.
+    Условия — в <a href="terms.html">пользовательском соглашении</a>. Вопросы — в поддержку: <a href="https://t.me/rolekit">@rolekit</a> или <a href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>.
+  </p>
+</div>
+
+<!-- ОКНО ОПЛАТЫ: заглушка, пока платёжная система не подключена -->
+<div class="pay-modal" id="pay-modal" onclick="closePay()">
+  <div class="pay-box" role="dialog" aria-modal="true" aria-labelledby="pay-title" onclick="event.stopPropagation()">
+    <button type="button" class="pay-close" onclick="closePay()" aria-label="Закрыть">✕</button>
+    <h3 id="pay-title">RoleKit Pro</h3>
+    <p class="pay-sum" id="pay-sum"></p>
+    <p class="pay-soon">Онлайн-оплата пока недоступна: мы подключаем платёжную систему. Скоро здесь можно будет оплатить онлайн.</p>
+    <p>А пока Pro можно получить через поддержку. Пришли Machine ID: значок RoleKit в трее → «Получить Pro», он скопируется сам.</p>
+    <a class="plan-action pro-a" href="https://t.me/rolekit" target="_blank" rel="noopener">Написать в Telegram @rolekit</a>
+    <a class="plan-action dl" href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>
   </div>
 </div>
 
@@ -1027,7 +1133,7 @@
         <span class="faq-icon">+</span>
       </div>
       <div class="faq-a">
-        Да. RoleKit не инжектится в игру, не трогает файлы и не нарушает правила сервера. Программа просто нажимает кнопки вместо тебя — как если бы ты сам печатал, только быстрее и без ошибок.
+        Да. RoleKit не инжектится в игру и не трогает её файлы. Программа просто нажимает кнопки вместо тебя — как если бы ты сам печатал, только быстрее и без ошибок. Правила своего сервера всё равно соблюдаешь ты — подробнее в <a href="terms.html">соглашении</a>.
       </div>
     </div>
     <div class="faq-item">
@@ -1063,7 +1169,25 @@
         <span class="faq-icon">+</span>
       </div>
       <div class="faq-a">
-        Напиши в Telegram <a href="https://t.me/ellingtontv" style="color:#5b7ef5">@ellingtontv</a> — обсудим условия и активируем лицензию.
+        Выбери тариф в разделе <a href="#pricing">«Тарифы»</a> и нажми «Купить». Pro на месяц стоит 100 ₽, Pro навсегда — 300 ₽. Pro привязывается к компьютеру по Machine ID: значок RoleKit в трее → «Получить Pro». Если что-то не получилось — пиши в поддержку <a href="https://t.me/rolekit">@rolekit</a> или на <a href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Pro на месяц продлевается сам?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        Нет. Это разовая оплата за 30 дней, деньги сами не списываются. Когда срок закончится, RoleKit вернётся на Free, а все настройки и профили останутся. Захочешь — продлишь ещё на месяц или возьмёшь Pro навсегда.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>Можно перенести Pro на другой компьютер?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">
+        Да, через поддержку. Напиши <a href="https://t.me/rolekit">@rolekit</a> или на <a href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>, пришли старый и новый Machine ID — перенесём лицензию.
       </div>
     </div>
   </div>
@@ -1082,7 +1206,16 @@
 </section>
 
 <footer>
-  © 2026 RoleKit · by Ellington · Для Radmir RP
+  <div class="foot-links">
+    <a href="#pricing">Тарифы</a>
+    <a href="privacy.html">Политика конфиденциальности</a>
+    <a href="terms.html">Пользовательское соглашение</a>
+  </div>
+  <div class="foot-links">
+    <span>Поддержка: <a href="https://t.me/rolekit">@rolekit</a> в Telegram</span>
+    <a href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>
+  </div>
+  © 2026 RoleKit · Для Radmir RP и Hassle Online
 </footer>
 
 <!-- LIGHTBOX -->
@@ -1095,6 +1228,15 @@
 </div>
 
 <script>
+  // Кнопка «Купить»: пока платёжная система не подключена, показываем окно-заглушку
+  const PLANS = { month: 'Pro на месяц — 100 ₽ за 30 дней', forever: 'Pro навсегда — 300 ₽ один раз' };
+  function openPay(plan) {
+    document.getElementById('pay-sum').textContent = PLANS[plan] || '';
+    document.getElementById('pay-modal').classList.add('open');
+  }
+  function closePay() { document.getElementById('pay-modal').classList.remove('open'); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePay(); });
+
   function slide(dir) {
     const s = document.getElementById('slider');
     s.scrollBy({ left: dir * 260, behavior: 'smooth' });
