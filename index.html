@@ -1148,7 +1148,8 @@
 
     <!-- онлайн-оплата недоступна: поддержка -->
     <div id="pay-down" hidden>
-      <p class="pay-soon">Онлайн-оплата сейчас недоступна. Попробуй чуть позже или получи Pro через поддержку: пришли Machine ID и выбранный тариф.</p>
+      <p class="pay-soon"><strong>Оплата временно недоступна.</strong> Мы подключаем платёжную систему — скоро здесь можно будет оплатить онлайн через СБП или криптовалютой.</p>
+      <p>А пока Pro можно получить через поддержку: пришли Machine ID и выбранный тариф.</p>
       <a class="plan-action pro-a" href="https://t.me/rolekit" target="_blank" rel="noopener">Написать в Telegram @rolekit</a>
       <a class="plan-action dl" href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>
     </div>
@@ -1280,6 +1281,9 @@
   // «Купить» → Machine ID → сервер лицензий создаёт платёж → страница платёжной системы →
   // возврат сюда с ?pay=ok|fail → спрашиваем у сервера статус заказа.
   // Pro выдаёт сервер по подтверждению платёжной системы, сайт ничего не решает.
+  // Пока платёжная система проходит модерацию — заглушка (по требованию Platega):
+  // кнопка оплаты кликабельна, но транзакция не создаётся. После одобрения: true.
+  const PAY_ENABLED = false;
   const PAY_API = ['https://api.ellingtontv.fun', 'https://api.miniups.store'];
   const PLANS = { month: 'Pro на месяц — 100 ₽ за 30 дней', forever: 'Pro навсегда — 300 ₽ один раз' };
   const $ = id => document.getElementById(id);
@@ -1335,6 +1339,8 @@
     }
     $('pay-mid').classList.remove('bad');
     $('pay-err').textContent = '';
+    localStorage.setItem('rk_mid', mid);
+    if (!PAY_ENABLED) { payView('down'); return; }   // заглушка: оплата временно недоступна
     $('pay-go').disabled = true;
     $('pay-go').textContent = 'Создаём платёж…';
     try {
