@@ -674,6 +674,25 @@
     }
     .pay-box .pay-close:hover { color: #fff; }
     .pay-box .plan-action { margin-top: 8px; }
+    .pay-label { display: block; color: #d8d8e8; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+    .pay-input {
+      width: 100%;
+      background: #0d0d14;
+      border: 1px solid #2a2a40;
+      border-radius: 8px;
+      padding: 11px 12px;
+      color: #fff;
+      font: 14px/1.3 Consolas, 'Courier New', monospace;
+      outline: none;
+    }
+    .pay-input:focus { border-color: #5b7ef5; }
+    .pay-input.bad { border-color: #e05a5a; }
+    .pay-hint { font-size: 12.5px; color: #70708f; margin: 8px 0 4px; line-height: 1.55; }
+    .pay-err { color: #ff7b7b; font-size: 13px; min-height: 0; margin: 4px 0 0; }
+    .pay-err:empty { display: none; }
+    .pay-go { width: 100%; border: none; cursor: pointer; font: inherit; }
+    .pay-go:disabled { opacity: .6; cursor: wait; }
+    .pay-legal { font-size: 11.5px; color: #55556f; margin-top: 12px; line-height: 1.55; }
     .plan {
       background: #111119;
       border: 1px solid #1a1a28;
@@ -1107,16 +1126,39 @@
   </p>
 </div>
 
-<!-- ОКНО ОПЛАТЫ: заглушка, пока платёжная система не подключена -->
+<!-- ОКНО ОПЛАТЫ: Machine ID → наш сервер создаёт платёж → страница платёжной системы -->
 <div class="pay-modal" id="pay-modal" onclick="closePay()">
   <div class="pay-box" role="dialog" aria-modal="true" aria-labelledby="pay-title" onclick="event.stopPropagation()">
     <button type="button" class="pay-close" onclick="closePay()" aria-label="Закрыть">✕</button>
     <h3 id="pay-title">RoleKit Pro</h3>
     <p class="pay-sum" id="pay-sum"></p>
-    <p class="pay-soon">Онлайн-оплата пока недоступна: мы подключаем платёжную систему. Скоро здесь можно будет оплатить онлайн.</p>
-    <p>А пока Pro можно получить через поддержку. Пришли Machine ID: значок RoleKit в трее → «Получить Pro», он скопируется сам.</p>
-    <a class="plan-action pro-a" href="https://t.me/rolekit" target="_blank" rel="noopener">Написать в Telegram @rolekit</a>
-    <a class="plan-action dl" href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>
+
+    <!-- шаг 1: форма -->
+    <form id="pay-form" onsubmit="startPay(event)" novalidate>
+      <label class="pay-label" for="pay-mid">Machine ID компьютера</label>
+      <input class="pay-input" id="pay-mid" autocomplete="off" spellcheck="false"
+             placeholder="например 3f9a…c21e (32 символа)" maxlength="80">
+      <p class="pay-hint">Значок RoleKit в трее (у часов) → «Получить Pro» — ID скопируется сам, вставь сюда. Pro привяжется к этому компьютеру.</p>
+      <p class="pay-err" id="pay-err"></p>
+      <button type="submit" class="plan-action pro-a pay-go" id="pay-go">Перейти к оплате</button>
+      <p class="pay-legal">Оплата через СБП или криптовалютой на странице платёжного сервиса. Нажимая кнопку, вы принимаете
+        <a href="terms.html" target="_blank">пользовательское соглашение</a> и
+        <a href="privacy.html" target="_blank">политику конфиденциальности</a>.</p>
+    </form>
+
+    <!-- онлайн-оплата недоступна: поддержка -->
+    <div id="pay-down" hidden>
+      <p class="pay-soon">Онлайн-оплата сейчас недоступна. Попробуй чуть позже или получи Pro через поддержку: пришли Machine ID и выбранный тариф.</p>
+      <a class="plan-action pro-a" href="https://t.me/rolekit" target="_blank" rel="noopener">Написать в Telegram @rolekit</a>
+      <a class="plan-action dl" href="mailto:rolekit.app@gmail.com">rolekit.app@gmail.com</a>
+    </div>
+
+    <!-- после возврата с оплаты -->
+    <div id="pay-result" hidden>
+      <p class="pay-soon" id="pay-result-text"></p>
+      <p id="pay-result-hint"></p>
+      <a class="plan-action dl" href="https://t.me/rolekit" target="_blank" rel="noopener">Поддержка @rolekit</a>
+    </div>
   </div>
 </div>
 
@@ -1234,13 +1276,133 @@
     .then(d => { if (d && /^v\d+(\.\d+)*$/.test(d.tag_name || '')) document.getElementById('app-ver').textContent = d.tag_name; })
     .catch(() => {});
 
-  // Кнопка «Купить»: пока платёжная система не подключена, показываем окно-заглушку
+  // ── Оплата Pro ──
+  // «Купить» → Machine ID → сервер лицензий создаёт платёж → страница платёжной системы →
+  // возврат сюда с ?pay=ok|fail → спрашиваем у сервера статус заказа.
+  // Pro выдаёт сервер по подтверждению платёжной системы, сайт ничего не решает.
+  const PAY_API = ['https://api.ellingtontv.fun', 'https://api.miniups.store'];
   const PLANS = { month: 'Pro на месяц — 100 ₽ за 30 дней', forever: 'Pro навсегда — 300 ₽ один раз' };
-  function openPay(plan) {
-    document.getElementById('pay-sum').textContent = PLANS[plan] || '';
-    document.getElementById('pay-modal').classList.add('open');
+  const $ = id => document.getElementById(id);
+  let payPlan = 'month';
+
+  function payView(which) {
+    $('pay-form').hidden = which !== 'form';
+    $('pay-down').hidden = which !== 'down';
+    $('pay-result').hidden = which !== 'result';
   }
-  function closePay() { document.getElementById('pay-modal').classList.remove('open'); }
+  function openPay(plan) {
+    payPlan = plan;
+    $('pay-title').textContent = 'RoleKit Pro';
+    $('pay-sum').textContent = PLANS[plan] || '';
+    $('pay-err').textContent = '';
+    $('pay-mid').classList.remove('bad');
+    $('pay-mid').value = localStorage.getItem('rk_mid') || '';
+    $('pay-go').disabled = false;
+    $('pay-go').textContent = 'Перейти к оплате';
+    payView('form');
+    $('pay-modal').classList.add('open');
+    setTimeout(() => $('pay-mid').focus(), 50);
+  }
+  function closePay() { $('pay-modal').classList.remove('open'); }
+
+  async function payApi(path, body) {
+    let lastErr;
+    for (const base of PAY_API) {
+      try {
+        const r = await fetch(base + path, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+        });
+        const j = await r.json().catch(() => ({}));
+        return { status: r.status, ...j };
+      } catch (e) { lastErr = e; }   // сервер не ответил — пробуем запасной адрес
+    }
+    throw lastErr;
+  }
+
+  const PAY_ERRORS = {
+    bad_machine_id: 'Это не похоже на Machine ID: нужно 32 символа (цифры и буквы a–f). Скопируй его ещё раз из трея.',
+    already_pro: 'На этом компьютере уже есть Pro навсегда — покупать ничего не нужно. Перезапусти RoleKit.',
+    too_many: 'Слишком много попыток подряд. Подожди 10 минут или напиши в поддержку.',
+  };
+
+  async function startPay(e) {
+    e.preventDefault();
+    const mid = $('pay-mid').value.toLowerCase().replace(/[^0-9a-f]/g, '');
+    if (mid.length !== 32) {
+      $('pay-mid').classList.add('bad');
+      $('pay-err').textContent = PAY_ERRORS.bad_machine_id;
+      return;
+    }
+    $('pay-mid').classList.remove('bad');
+    $('pay-err').textContent = '';
+    $('pay-go').disabled = true;
+    $('pay-go').textContent = 'Создаём платёж…';
+    try {
+      const j = await payApi('/pay/create', { machine_id: mid, type: payPlan });
+      if (j.ok && j.pay_url) {
+        localStorage.setItem('rk_mid', mid);
+        localStorage.setItem('rk_order', JSON.stringify({ id: j.order_id, plan: payPlan, at: Date.now() }));
+        location.href = j.pay_url;
+        return;
+      }
+      if (PAY_ERRORS[j.error]) {
+        $('pay-err').textContent = PAY_ERRORS[j.error];
+      } else {
+        payView('down');   // нет ключей, платёжка лежит, сервер не обновлён
+      }
+    } catch (err) {
+      payView('down');
+    }
+    $('pay-go').disabled = false;
+    $('pay-go').textContent = 'Перейти к оплате';
+  }
+
+  // Возврат со страницы оплаты
+  async function payReturn() {
+    const q = new URLSearchParams(location.search);
+    const res = q.get('pay');
+    if (res !== 'ok' && res !== 'fail') return;
+    history.replaceState(null, '', location.pathname + '#pricing');
+    let order = null;
+    try { order = JSON.parse(localStorage.getItem('rk_order') || 'null'); } catch (e) {}
+    $('pay-sum').textContent = order && PLANS[order.plan] ? PLANS[order.plan] : '';
+    payView('result');
+    $('pay-modal').classList.add('open');
+    const show = (title, text, hint) => {
+      $('pay-title').textContent = title;
+      $('pay-result-text').textContent = text;
+      $('pay-result-hint').textContent = hint || '';
+    };
+    const RESTART = 'Перезапусти RoleKit: при запуске он проверит лицензию и включит Pro. Если не включился — напиши в поддержку, приложи Machine ID.';
+    if (res === 'fail') {
+      show('Оплата не прошла', 'Платёж отменён или не завершён. Деньги не списаны — можно попробовать ещё раз.',
+           'Если деньги всё-таки списались, напиши в поддержку — разберёмся.');
+      return;
+    }
+    if (!order || !order.id) {
+      show('Спасибо за оплату!', 'Pro включится, как только платёжная система подтвердит оплату — обычно сразу.', RESTART);
+      return;
+    }
+    show('Проверяем оплату…', 'Ждём подтверждение от платёжной системы, обычно это несколько секунд.');
+    for (let i = 0; i < 30; i++) {           // до ~2 минут
+      try {
+        const j = await payApi('/pay/status', { order_id: order.id });
+        if (j.ok && j.paid) {
+          localStorage.removeItem('rk_order');
+          show('Pro активирован ✓', order.plan === 'forever' ? 'RoleKit Pro навсегда на этом компьютере.' : 'RoleKit Pro на 30 дней.', RESTART);
+          return;
+        }
+        if (j.ok && /CANCEL|FAIL|EXPIRED/.test(j.status || '')) {
+          localStorage.removeItem('rk_order');
+          show('Оплата не прошла', 'Платёж отменён или истёк. Деньги не списаны — можно попробовать ещё раз.');
+          return;
+        }
+      } catch (e) {}
+      await new Promise(r => setTimeout(r, 4000));
+    }
+    show('Оплата ещё обрабатывается', 'Банк пока не прислал подтверждение. Pro включится сам, как только оно придёт — обычно в течение нескольких минут, иногда до 24 часов.', RESTART);
+  }
+  payReturn();
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePay(); });
 
   function slide(dir) {
