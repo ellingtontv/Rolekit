@@ -4,7 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <title>RoleKit — помощник для Radmir RP</title>
+  <title>RoleKit — отыгровки одной кнопкой для Radmir RP и Hassle Online</title>
+  <meta name="description" content="Отыгровки, автотекст и кодексы по одной кнопке, запись экрана. Ник, звание и фракция подставляются сами. Бесплатно для Windows." />
+  <meta name="theme-color" content="#0d0d14" />
+  <link rel="canonical" href="https://ellingtontv.github.io/Rolekit/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="RoleKit" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:url" content="https://ellingtontv.github.io/Rolekit/" />
+  <meta property="og:title" content="RoleKit — отыгровки одной кнопкой" />
+  <meta property="og:description" content="Для Radmir RP и Hassle Online. Отыгровки, автотекст и кодексы по одной кнопке, запись экрана. Ник, звание и фракция подставляются сами. Бесплатно для Windows." />
+  <meta property="og:image" content="https://ellingtontv.github.io/Rolekit/og.png?v=1" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="RoleKit — отыгровки одной кнопкой для Radmir RP и Hassle Online" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ellingtontv.github.io/Rolekit/og.png?v=1" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -147,14 +162,14 @@
       animation: up .7s .2s ease forwards;
     }
     .h1-dim {
-      color: #40405a;
+      color: #6c6c8a;
     }
 
     .hero-sub {
       font-size: clamp(15px, 2vw, 18px);
-      color: #6060808;
+      color: #8a8aa8;
       max-width: 460px;
-      color: #70708a;
+      color: #8c8ca8;
       margin-bottom: 40px;
       opacity: 0;
       animation: up .7s .3s ease forwards;
@@ -187,7 +202,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: #70708a;
+      color: #8c8ca8;
       padding: 13px 24px;
       border-radius: 8px;
       text-decoration: none;
@@ -201,7 +216,7 @@
     .hero-meta {
       margin-top: 14px;
       font-size: 12px;
-      color: #35354a;
+      color: #5e5e7a;
       opacity: 0;
       animation: up .7s .5s ease forwards;
     }
@@ -250,7 +265,7 @@
       flex: 1;
       text-align: center;
       font-size: 12px;
-      color: #40405a;
+      color: #6c6c8a;
       letter-spacing: 1px;
     }
     .window-body img {
@@ -305,7 +320,7 @@
     }
     .subtitle {
       font-size: 16px;
-      color: #60608a;
+      color: #8282a4;
       max-width: 480px;
       text-align: center;
       margin: 0 auto;
@@ -326,7 +341,7 @@
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #35354a;
+      color: #5e5e7a;
     }
     .demo-keys {
       display: flex;
@@ -353,8 +368,8 @@
       color: #fff;
       border-color: #2a4ab8;
     }
-    .demo-plus { color: #35354a; font-size: 18px; }
-    .demo-hint { font-size: 13px; color: #35354a; }
+    .demo-plus { color: #5e5e7a; font-size: 18px; }
+    .demo-hint { font-size: 13px; color: #5e5e7a; }
     .demo-arrow { font-size: 28px; color: #2a2a40; margin-top: 28px; }
     .demo-chat {
       background: #111119;
@@ -364,6 +379,19 @@
       min-width: 340px;
       max-width: 420px;
     }
+    .demo-log {
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: #9a9ab8;
+      margin-bottom: 8px;
+      min-height: 78px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-align: left;
+    }
+    .demo-log div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .demo-log b { color: #5b7ef5; font-weight: 600; }
     .demo-chat-bar {
       display: flex;
       align-items: center;
@@ -463,7 +491,7 @@
     }
     .feat p {
       font-size: 13px;
-      color: #50506a;
+      color: #7c7c98;
       line-height: 1.6;
     }
 
@@ -534,7 +562,7 @@
       position: fixed;
       top: 20px; right: 24px;
       font-size: 28px;
-      color: #70708a;
+      color: #8c8ca8;
       cursor: pointer;
       line-height: 1;
       transition: color .2s;
@@ -564,7 +592,7 @@
       left: 50%;
       transform: translateX(-50%);
       font-size: 13px;
-      color: #50506a;
+      color: #7c7c98;
     }
     @keyframes zoomIn {
       from { opacity: 0; transform: scale(0.9); }
@@ -626,7 +654,7 @@
       max-width: 980px;
       margin: 20px auto 0;
       font-size: 13px;
-      color: #50506a;
+      color: #7c7c98;
       text-align: center;
       line-height: 1.7;
     }
@@ -672,7 +700,7 @@
       right: 14px;
       background: none;
       border: none;
-      color: #50506a;
+      color: #7c7c98;
       font-size: 20px;
       cursor: pointer;
     }
@@ -696,7 +724,7 @@
     .pay-err:empty { display: none; }
     .pay-go { width: 100%; border: none; cursor: pointer; font: inherit; }
     .pay-go:disabled { opacity: .6; cursor: wait; }
-    .pay-legal { font-size: 11.5px; color: #55556f; margin-top: 12px; line-height: 1.55; }
+    .pay-legal { font-size: 11.5px; color: #7a7a94; margin-top: 12px; line-height: 1.55; }
     .plan {
       background: #111119;
       border: 1px solid #1a1a28;
@@ -711,7 +739,7 @@
       font-size: 11px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #40405a;
+      color: #6c6c8a;
       margin-bottom: 8px;
     }
     .plan.pro .plan-tier { color: #5b7ef5; }
@@ -722,8 +750,8 @@
       margin-bottom: 4px;
       line-height: 1;
     }
-    .plan-price sub { font-size: 14px; font-weight: 400; color: #40405a; }
-    .plan-note { font-size: 12px; color: #40405a; margin-bottom: 24px; margin-top: 4px; }
+    .plan-price sub { font-size: 14px; font-weight: 400; color: #6c6c8a; }
+    .plan-note { font-size: 12px; color: #6c6c8a; margin-bottom: 24px; margin-top: 4px; }
     .plan ul { list-style: none; margin-bottom: 24px; }
     .plan ul li {
       font-size: 13px;
@@ -781,7 +809,7 @@
     .faq-item.open .faq-icon { transform: rotate(45deg); }
     .faq-a {
       font-size: 14px;
-      color: #60608a;
+      color: #8282a4;
       line-height: 1.7;
       max-height: 0;
       overflow: hidden;
@@ -816,7 +844,7 @@
       margin-bottom: 12px;
       letter-spacing: -0.5px;
     }
-    .final p { font-size: 16px; color: #50506a; margin-bottom: 36px; }
+    .final p { font-size: 16px; color: #7c7c98; margin-bottom: 36px; }
 
     /* ── FOOTER ── */
     footer {
@@ -824,7 +852,7 @@
       padding: 28px 24px;
       border-top: 1px solid #1a1a28;
       font-size: 12px;
-      color: #50506a;
+      color: #7c7c98;
       line-height: 2;
     }
     footer a { color: #7070a0; text-decoration: none; }
@@ -901,16 +929,16 @@
 <section class="hero">
   <div class="hero-glow"></div>
 
-  <p class="hero-eyebrow">RADMIR RP</p>
+  <p class="hero-eyebrow">RADMIR RP · HASSLE ONLINE</p>
 
   <div class="hero-appname">ROLEKIT</div>
 
-  <h1><span class="h1-dim">AHK уже в прошлом.</span><br>Отыгровки без ошибок.</h1>
+  <h1><span class="h1-dim">Отыгровки</span><br>одной кнопкой.</h1>
 
   <p class="hero-sub">
-    Нажал хоткей — текст уже в чате.<br>
-    Ник, звание, фракция подставляются сами.<br>
-    Никакого копипаста.
+    Нажал хоткей — текст уже в чате игры.<br>
+    Ник, звание и фракция подставляются сами.<br>
+    Сидел на AHK? Тут всё то же, только без кода.
   </p>
 
   <div class="hero-actions">
@@ -954,12 +982,22 @@
     <div class="feat">
       <span class="feat-icon">🤖</span>
       <h3>Автотекст</h3>
-      <p>Напишешь <code style="color:#5b7ef5;font-size:12px">/afsin</code> — скрипт сам отправит полный текст вызова. Никакого копипаста.</p>
+      <p>Напишешь <code style="color:#5b7ef5;font-size:12px">/adv</code> — и в чат уйдёт полный текст вызова адвоката. Никакого копипаста.</p>
     </div>
     <div class="feat">
       <span class="feat-icon">📖</span>
-      <h3>Кодексы</h3>
-      <p>УК, КоАП, ПК по хоткею прямо в игре. Быстрый доступ к любой статье без переключения окон.</p>
+      <h3>Кодексы с форума</h3>
+      <p>УК, КоАП, ПК твоего сервера поверх игры по хоткею. Подтягиваются с форума и обновляются сами.</p>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🎥</span>
+      <h3>Запись экрана</h3>
+      <p>Ctrl+F10 — и пишется видео со звуком игры и микрофона. Без OBS и настроек, записи раскладываются по персонажам.</p>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🎮</span>
+      <h3>Radmir RP и Hassle Online</h3>
+      <p>Одна программа для обеих игр. Клавиша чата подбирается сама, хоткеи работают только в игре.</p>
     </div>
     <div class="feat">
       <span class="feat-icon">👤</span>
@@ -974,7 +1012,12 @@
     <div class="feat">
       <span class="feat-icon">⌨️</span>
       <h3>Имитация живого набора</h3>
-      <p>Текст печатается побуквенно. Выглядит как ручной ввод — никаких подозрений.</p>
+      <p>Текст печатается побуквенно, как будто набираешь его сам.</p>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🔄</span>
+      <h3>Автообновление</h3>
+      <p>Новая версия в один клик: программа сама предложит, скачает, проверит и перезапустится.</p>
     </div>
   </div>
 </div>
@@ -1003,8 +1046,13 @@
     <div class="demo-right">
       <div class="demo-label">Текст в чате</div>
       <div class="demo-chat">
+        <div class="demo-log" id="demo-log">
+          <div><b>/m</b> Водитель, прижмитесь к обочине!</div>
+          <div><b>/me</b> вышел из патрульного автомобиля</div>
+          <div><b>/me</b> подошёл к водительской двери</div>
+        </div>
         <div class="demo-chat-bar">
-          <span class="demo-typed" id="demo-typed"></span><span class="demo-cursor">|</span>
+          <span class="demo-typed" id="demo-typed"><span style="color:#5b7ef5">/me</span> достал из кармана удостоверение</span><span class="demo-cursor">|</span>
         </div>
       </div>
     </div>
@@ -1016,7 +1064,7 @@
     <div class="demo-left">
       <div class="demo-label">Автотекст</div>
       <div class="demo-keys">
-        <div class="demo-key demo-key-trigger" id="dkey-trigger">/mrda</div>
+        <div class="demo-key demo-key-trigger" id="dkey-trigger">/adv</div>
       </div>
       <div class="demo-hint">Вызов адвоката</div>
     </div>
@@ -1026,8 +1074,12 @@
     <div class="demo-right">
       <div class="demo-label">Текст в чате</div>
       <div class="demo-chat">
+        <div class="demo-log" id="demo-log2">
+          <div><b>/r</b> Принял, задержанный доставлен в участок.</div>
+          <div>Вы имеете право на получение адвокатской помощи.</div>
+        </div>
         <div class="demo-chat-bar">
-          <span class="demo-typed" id="demo-typed2"></span><span class="demo-cursor">|</span>
+          <span class="demo-typed" id="demo-typed2"><span style="color:#5b7ef5">/d</span> [МВД] - [Пра-во]: Запрашиваю адвоката</span><span class="demo-cursor">|</span>
         </div>
       </div>
     </div>
@@ -1474,9 +1526,9 @@
 
   // demo typewriter
   const demoLines = [
-    'Здравия желаю! Подполковник ФСБ - Robertt_Ellington .',
+    'Здравия желаю! Лейтенант МВД - Ivan_Petrov .',
     '/do Удостоверение находится в кармане.',
-    '/do Жетон ФСБ на груди.',
+    '/do Жетон МВД на груди.',
     '/me достал из кармана удостоверение, раскрыв его, показал гражданину',
     '/doc',
   ];
@@ -1491,6 +1543,16 @@
     } else {
       typed.textContent = text;
     }
+  }
+
+  // «Отправленные» строки копятся над строкой ввода, как в чате игры
+  function pushLog(id, html) {
+    const log = document.getElementById(id);
+    if (!log) return;
+    const d = document.createElement('div');
+    d.innerHTML = html;
+    log.appendChild(d);
+    while (log.children.length > 4) log.removeChild(log.firstChild);
   }
 
   function runDemo() {
@@ -1514,7 +1576,7 @@
         if (i >= line.length) {
           clearInterval(interval);
           // пауза между строками — имитация отправки
-          setTimeout(typeLine, 600);
+          setTimeout(() => { pushLog('demo-log', typed.innerHTML); typed.innerHTML = ''; typeLine(); }, 600);
           return;
         }
         renderTyped(line.slice(0, i + 1));
@@ -1528,8 +1590,8 @@
   // автотекст демо
   const autoDemos = [
     {
-      trigger: '/afsin',
-      lines: ['/d [ФСБ] - [Пра-во]: Запрашиваю адвоката к ФСИН. Время вызова:'],
+      trigger: '/adv',
+      lines: ['/d [МВД] - [Пра-во]: Запрашиваю адвоката в участок. Время вызова: 14:20'],
     },
   ];
   let autoDemoIdx = 0;
@@ -1571,7 +1633,11 @@
     const interval = setInterval(() => {
       if (i >= line.length) {
         clearInterval(interval);
-        setTimeout(() => typeAutoLine(lines, lineIdx + 1), 600);
+        setTimeout(() => {
+          pushLog('demo-log2', typed2.innerHTML);
+          typed2.innerHTML = '';
+          typeAutoLine(lines, lineIdx + 1);
+        }, 600);
         return;
       }
       renderTyped2(line.slice(0, i + 1));
@@ -1591,7 +1657,7 @@
   // запустить когда секция видна
   const demoObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) { runDemo(); runAutoDemo(); demoObs.disconnect(); }
-  }, { threshold: 0.3 });
+  }, { threshold: 0.05 });
   const demoSection = document.querySelector('.demo-section');
   if (demoSection) demoObs.observe(demoSection);
 
