@@ -1139,6 +1139,10 @@
       <input class="pay-input" id="pay-mid" autocomplete="off" spellcheck="false"
              placeholder="например 3f9a…c21e (32 символа)" maxlength="80">
       <p class="pay-hint">Значок RoleKit в трее (у часов) → «Получить Pro» — ID скопируется сам, вставь сюда. Pro привяжется к этому компьютеру.</p>
+      <label class="pay-label" for="pay-email">E-mail для связи</label>
+      <input class="pay-input" id="pay-email" type="email" autocomplete="email" spellcheck="false"
+             placeholder="you@example.com" maxlength="254">
+      <p class="pay-hint">Напишем только по этому заказу — если с оплатой или активацией что-то пойдёт не так. Без рассылок.</p>
       <p class="pay-err" id="pay-err"></p>
       <button type="submit" class="plan-action pro-a pay-go" id="pay-go">Перейти к оплате</button>
       <p class="pay-legal">Оплата через СБП или криптовалютой на странице платёжного сервиса. Нажимая кнопку, вы принимаете
@@ -1300,7 +1304,9 @@
     $('pay-sum').textContent = PLANS[plan] || '';
     $('pay-err').textContent = '';
     $('pay-mid').classList.remove('bad');
+    $('pay-email').classList.remove('bad');
     $('pay-mid').value = localStorage.getItem('rk_mid') || '';
+    $('pay-email').value = localStorage.getItem('rk_email') || '';
     $('pay-go').disabled = false;
     $('pay-go').textContent = 'Перейти к оплате';
     payView('form');
@@ -1326,25 +1332,27 @@
   const PAY_ERRORS = {
     bad_machine_id: 'Это не похоже на Machine ID: нужно 32 символа (цифры и буквы a–f). Скопируй его ещё раз из трея.',
     already_pro: 'На этом компьютере уже есть Pro навсегда — покупать ничего не нужно. Перезапусти RoleKit.',
+    bad_email: 'Проверь e-mail: нужен адрес вида name@gmail.com — по нему свяжемся, если с оплатой что-то пойдёт не так.',
     too_many: 'Слишком много попыток подряд. Подожди 10 минут или напиши в поддержку.',
   };
+  const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
 
   async function startPay(e) {
     e.preventDefault();
     const mid = $('pay-mid').value.toLowerCase().replace(/[^0-9a-f]/g, '');
-    if (mid.length !== 32) {
-      $('pay-mid').classList.add('bad');
-      $('pay-err').textContent = PAY_ERRORS.bad_machine_id;
-      return;
-    }
-    $('pay-mid').classList.remove('bad');
+    const email = $('pay-email').value.trim().toLowerCase();
+    $('pay-mid').classList.toggle('bad', mid.length !== 32);
+    $('pay-email').classList.toggle('bad', !EMAIL_RE.test(email));
+    if (mid.length !== 32) { $('pay-err').textContent = PAY_ERRORS.bad_machine_id; $('pay-mid').focus(); return; }
+    if (!EMAIL_RE.test(email)) { $('pay-err').textContent = PAY_ERRORS.bad_email; $('pay-email').focus(); return; }
     $('pay-err').textContent = '';
     localStorage.setItem('rk_mid', mid);
+    localStorage.setItem('rk_email', email);
     if (!PAY_ENABLED) { payView('down'); return; }   // заглушка: оплата временно недоступна
     $('pay-go').disabled = true;
     $('pay-go').textContent = 'Создаём платёж…';
     try {
-      const j = await payApi('/pay/create', { machine_id: mid, type: payPlan });
+      const j = await payApi('/pay/create', { machine_id: mid, email, type: payPlan });
       if (j.ok && j.pay_url) {
         localStorage.setItem('rk_mid', mid);
         localStorage.setItem('rk_order', JSON.stringify({ id: j.order_id, plan: payPlan, at: Date.now() }));
