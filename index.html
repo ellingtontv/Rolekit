@@ -982,7 +982,7 @@
     <div class="feat">
       <span class="feat-icon">🤖</span>
       <h3>Автотекст</h3>
-      <p>Напишешь <code style="color:#5b7ef5;font-size:12px">/adv</code> — и в чат уйдёт полный текст вызова адвоката. Никакого копипаста.</p>
+      <p>Напишешь <code style="color:#5b7ef5;font-size:12px">/afsin</code> — скрипт сам отправит полный текст вызова. Никакого копипаста. Никакого копипаста.</p>
     </div>
     <div class="feat">
       <span class="feat-icon">📖</span>
@@ -1064,7 +1064,7 @@
     <div class="demo-left">
       <div class="demo-label">Автотекст</div>
       <div class="demo-keys">
-        <div class="demo-key demo-key-trigger" id="dkey-trigger">/adv</div>
+        <div class="demo-key demo-key-trigger" id="dkey-trigger">/afsin</div>
       </div>
       <div class="demo-hint">Вызов адвоката</div>
     </div>
@@ -1079,7 +1079,7 @@
           <div>Вы имеете право на получение адвокатской помощи.</div>
         </div>
         <div class="demo-chat-bar">
-          <span class="demo-typed" id="demo-typed2"><span style="color:#5b7ef5">/d</span> [МВД] - [Пра-во]: Запрашиваю адвоката</span><span class="demo-cursor">|</span>
+          <span class="demo-typed" id="demo-typed2"><span style="color:#5b7ef5">/d</span> [ФСБ] - [Пра-во]: Запрашиваю адвоката к ФСИН</span><span class="demo-cursor">|</span>
         </div>
       </div>
     </div>
@@ -1590,8 +1590,8 @@
   // автотекст демо
   const autoDemos = [
     {
-      trigger: '/adv',
-      lines: ['/d [МВД] - [Пра-во]: Запрашиваю адвоката в участок. Время вызова: 14:20'],
+      trigger: '/afsin',
+      lines: ['/d [ФСБ] - [Пра-во]: Запрашиваю адвоката к ФСИН. Время вызова:'],
     },
   ];
   let autoDemoIdx = 0;
