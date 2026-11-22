@@ -576,19 +576,23 @@
       box-shadow: 0 16px 48px rgba(61,92,232,0.15);
     }
     .shot img { width: 100%; display: block; }
-    .shot-wide {
-      margin-top: 14px;
-      width: 100%;
-      flex: none;
+    .panels-row {
+      display: grid;
+      grid-template-columns: 0.8fr 1fr;
+      gap: 14px;
+      margin: 28px auto 0;
+      max-width: 760px;
+      align-items: start;
     }
+    .panels-row .shot { background: #111119; }
 
     .shot-cap {
       background: #0f0f18;
       text-align: center;
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 1px;
-      color: #40405a;
-      padding: 8px;
+      color: #8a8aa8;
+      padding: 10px 8px;
       text-transform: uppercase;
     }
 
@@ -862,6 +866,7 @@
 
       .shots-grid { gap: 10px; }
       .shot { flex: 0 0 200px; }
+      .panels-row { grid-template-columns: 1fr 1fr; gap: 10px; }
 
       .plans { grid-template-columns: 1fr; }
 
@@ -928,7 +933,7 @@
         <span class="window-title">RoleKit</span>
       </div>
       <div class="window-body">
-        <img src="screenshots/rp.png" alt="RoleKit">
+        <img src="screenshots/roleplay.png?v=106" alt="RoleKit: отыгровки на горячих клавишах">
       </div>
     </div>
   </div>
@@ -1040,31 +1045,41 @@
       <button class="slider-btn prev" onclick="slide(-1)">&#8592;</button>
       <div class="shots-grid" id="slider">
         <div class="shot" onclick="openLightbox(this)">
-          <img src="screenshots/profile.png" alt="Профиль">
+          <img src="screenshots/profile.png?v=106" alt="Профиль">
           <div class="shot-cap">Профиль</div>
         </div>
         <div class="shot" onclick="openLightbox(this)">
-          <img src="screenshots/roleplay.png" alt="Отыгровки">
+          <img src="screenshots/roleplay.png?v=106" alt="Отыгровки">
           <div class="shot-cap">Отыгровки</div>
         </div>
         <div class="shot" onclick="openLightbox(this)">
-          <img src="screenshots/autotext.png" alt="Автотекст">
+          <img src="screenshots/autotext.png?v=106" alt="Автотекст">
           <div class="shot-cap">Автотекст</div>
         </div>
         <div class="shot" onclick="openLightbox(this)">
-          <img src="screenshots/codex.png" alt="Кодексы">
+          <img src="screenshots/codex.png?v=106" alt="Кодексы">
           <div class="shot-cap">Кодексы</div>
         </div>
         <div class="shot" onclick="openLightbox(this)">
-          <img src="screenshots/theme.png" alt="Светлая тема">
+          <img src="screenshots/record.png?v=106" alt="Запись экрана">
+          <div class="shot-cap">Запись экрана</div>
+        </div>
+        <div class="shot" onclick="openLightbox(this)">
+          <img src="screenshots/theme.png?v=106" alt="Светлая тема">
           <div class="shot-cap">Светлая тема</div>
         </div>
       </div>
       <button class="slider-btn next" onclick="slide(1)">&#8594;</button>
     </div>
-    <div class="shot shot-wide" onclick="openLightbox(this)">
-      <img src="screenshots/menus.png" alt="Панели и шпаргалка">
-      <div class="shot-cap">Панели и шпаргалка</div>
+    <div class="panels-row reveal">
+      <div class="shot" onclick="openLightbox(this)">
+        <img src="screenshots/panel_cheatsheet.png?v=106" alt="Шпаргалка F4 поверх игры" loading="lazy">
+        <div class="shot-cap">Шпаргалка F4 поверх игры</div>
+      </div>
+      <div class="shot" onclick="openLightbox(this)">
+        <img src="screenshots/panel_koap.png?v=106" alt="Кодекс с форума поверх игры" loading="lazy">
+        <div class="shot-cap">Кодекс с форума поверх игры</div>
+      </div>
     </div>
   </div>
 </div>
