@@ -1412,10 +1412,16 @@
         document.getElementById('app-ver').textContent = stable[0].tag_name;
       const sum = list.reduce((acc, rel) => acc + (rel.assets || [])
         .filter(a => /\.exe$/i.test(a.name)).reduce((x, a) => x + (a.download_count || 0), 0), 0);
-      if (sum > dlReal) {
-        const grew = dlReal > 0 && sum > dlShown;
-        dlReal = sum;
-        dlAnimateTo(Math.max(sum, dlShown), first ? 1600 : 900);
+      // Своё недавнее скачивание: GitHub его ещё не посчитал — держим +1, пока не догонит
+      let mine = null;
+      try { mine = JSON.parse(localStorage.getItem('rk_dl') || 'null'); } catch (e) {}
+      let target = sum;
+      if (mine && Date.now() - mine.at < 30 * 60 * 1000 && sum <= mine.base) target = mine.base + 1;
+      else localStorage.removeItem('rk_dl');
+      if (target > dlReal) {
+        const grew = dlReal > 0 && target > dlShown;
+        dlReal = target;
+        dlAnimateTo(Math.max(target, dlShown), first ? 1600 : 900);
         if (grew) dlBump();
       }
     } catch (e) {
@@ -1427,7 +1433,13 @@
   setInterval(() => { if (!document.hidden) dlFetch(false); }, 90000);
   // Своё скачивание засчитываем сразу, не дожидаясь GitHub
   document.querySelectorAll('a[href$="/RoleKit.exe"]').forEach(a => a.addEventListener('click', () => {
-    dlAnimateTo(dlShown + 1, 500); dlBump();
+    // запоминаем, чтобы +1 не пропал после перезагрузки, пока GitHub не обновит счётчик
+    let mine = null;
+    try { mine = JSON.parse(localStorage.getItem('rk_dl') || 'null'); } catch (e) {}
+    const recent = mine && Date.now() - mine.at < 30 * 60 * 1000;
+    if (!recent) localStorage.setItem('rk_dl', JSON.stringify({ base: dlReal || dlShown, at: Date.now() }));
+    if (!recent) { dlReal = (dlReal || dlShown) + 1; dlAnimateTo(dlShown + 1, 500); }
+    dlBump();
   }));
 
   // ── Оплата Pro ──
