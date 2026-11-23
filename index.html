@@ -1483,6 +1483,15 @@
     }
     show('Оплата ещё обрабатывается', 'Банк пока не прислал подтверждение. Pro включится сам, как только оно придёт — обычно в течение нескольких минут, иногда до 24 часов.', RESTART);
   }
+  // Переход из программы: ?mid=<Machine ID> — запоминаем для окна оплаты и убираем из адреса
+  (function () {
+    const q = new URLSearchParams(location.search);
+    const m = (q.get('mid') || '').toLowerCase().replace(/[^0-9a-f]/g, '');
+    if (!q.has('mid')) return;
+    if (m.length === 32) localStorage.setItem('rk_mid', m);
+    q.delete('mid');
+    history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash);
+  })();
   payReturn();
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePay(); });
 
