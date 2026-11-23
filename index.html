@@ -1654,6 +1654,8 @@
     if (!log) return;
     const d = document.createElement('div');
     d.innerHTML = html;
+    // демо крутится по кругу: та же строка не должна копиться — старую копию убираем
+    [...log.children].forEach(c => { if (c.textContent === d.textContent) c.remove(); });
     log.appendChild(d);
     while (log.children.length > 4) log.removeChild(log.firstChild);
   }
