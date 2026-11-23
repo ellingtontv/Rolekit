@@ -422,7 +422,7 @@
       min-height: 22px;
     }
     .demo-chat-prefix { color: #5b7ef5; flex-shrink: 0; }
-    .demo-typed { color: #d0d0e8; word-break: break-all; text-align: left; }
+    .demo-typed { color: #d0d0e8; word-break: normal; overflow-wrap: break-word; text-align: left; }
     .demo-cursor {
       color: #5b7ef5;
       animation: blink 1s step-end infinite;
@@ -1648,6 +1648,12 @@
     }
   }
 
+  // Строку, которую начинаем печатать заново, убираем из чата — иначе видно две одинаковые
+  function dropFromLog(id, text) {
+    const log = document.getElementById(id);
+    if (log) [...log.children].forEach(c => { if (c.textContent === text) c.remove(); });
+  }
+
   // «Отправленные» строки копятся над строкой ввода, как в чате игры
   function pushLog(id, html) {
     const log = document.getElementById(id);
@@ -1675,6 +1681,7 @@
         return;
       }
       const line = demoLines[lineIdx++];
+      dropFromLog('demo-log', line);
       typed.innerHTML = '';
       let i = 0;
       const interval = setInterval(() => {
@@ -1733,6 +1740,7 @@
       return;
     }
     const line = lines[lineIdx];
+    dropFromLog('demo-log2', line);
     typed2.innerHTML = '';
     let i = 0;
     const interval = setInterval(() => {
