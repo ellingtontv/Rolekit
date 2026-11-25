@@ -1448,7 +1448,7 @@
   // Pro выдаёт сервер по подтверждению платёжной системы, сайт ничего не решает.
   // Пока платёжная система проходит модерацию — заглушка (по требованию Platega):
   // кнопка оплаты кликабельна, но транзакция не создаётся. После одобрения: true.
-  const PAY_ENABLED = false;
+  const PAY_ENABLED = true;
   const PAY_API = ['https://api.ellingtontv.fun', 'https://api.miniups.store'];
   const PLANS = { month: 'Pro на месяц — 100 ₽ за 30 дней', forever: 'Pro навсегда — 300 ₽ один раз' };
   const $ = id => document.getElementById(id);
